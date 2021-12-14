@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DGVPrinterHelper;
+using System.Text.RegularExpressions;
 using MySql.Data.MySqlClient;
 
 
@@ -76,6 +78,26 @@ namespace Example
                 Win.Owner = this;
                 this.Hide();
                 Win.Show();
+            }
+        }
+
+        private void print_btn_Click(object sender, EventArgs e)
+        {
+            if(char_list.Rows.Count > 0)
+            {
+                DGVPrinter print = new DGVPrinter();
+                print.Title = "Список ваших персонажей!";
+                print.SubTitle = Environment.NewLine + "Итак, давайте поглядим:" + Environment.NewLine;
+                print.PageNumbers = false;
+                print.PageNumberInHeader = false;
+                print.PorportionalColumns = true;
+                print.HeaderCellAlignment = StringAlignment.Center;
+                char_list.ClearSelection();
+                print.PrintDataGridView(char_list);
+            }
+            else
+            {
+                MessageBox.Show("В таблице нет ни одной записи!", "Ошибка создания отчета", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
